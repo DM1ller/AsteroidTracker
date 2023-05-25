@@ -55,7 +55,10 @@
     <thead>
       <tr>
         <th>ID</th>
+        <th>Name</th>
+        <th>Orbiting Body</th>
         <th>Size (Meters)</th>
+        <th>Relative Velocity (KP/H)</th>
         <th>Is Hazardous</th>
       </tr>
     </thead>
@@ -85,9 +88,21 @@
         idCell.textContent = item.ID.S;
         row.appendChild(idCell);
 
+        const nameCell = document.createElement('td');
+        nameCell.textContent = item.Name.S;
+        row.appendChild(nameCell);
+
+        const orbitingBodyCell = document.createElement('td');
+        orbitingBodyCell.textContent = item['Orbiting Body'].S;
+        row.appendChild(orbitingBodyCell);
+
         const sizeCell = document.createElement('td');
         sizeCell.textContent = item['Size (Meters)'].N;
         row.appendChild(sizeCell);
+
+        const velocityCell = document.createElement('td');
+        velocityCell.textContent = item['Relative Velocity (KPH)'].S;
+        row.appendChild(velocityCell);
 
         const hazardousCell = document.createElement('td');
         hazardousCell.textContent = item['Is Hazardous'].BOOL;
