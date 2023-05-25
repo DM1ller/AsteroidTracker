@@ -1,0 +1,105 @@
+<html>
+<head>
+  <title>Asteroid Tracker 1.0</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    #asteroid-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+    }
+
+    #asteroid-table thead {
+      background-color: #f9f9f9;
+    }
+
+    #asteroid-table th,
+    #asteroid-table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    #asteroid-table tbody tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    #asteroid-count {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Asteroid Tracker</h1>
+  <br>
+  <center><img src="https://cdnb.artstation.com/p/assets/images/images/023/930/069/original/leandro-camara-door-meteorite-close2.gif?1580791913" width="500" height="500"></center>
+
+  <div id="asteroid-count"></div>
+
+  <table id="asteroid-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Size (Meters)</th>
+        <th>Is Hazardous</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const asteroidCount = document.getElementById('asteroid-count');
+
+    fetch('https://sfqakw5vsg.execute-api.us-east-1.amazonaws.com/Test22/asteroidapiresource')
+      .then(response => response.json())
+      .then(data => {
+        buildTable(data);
+        displayAsteroidCount(data.length);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
+    function buildTable(data) {
+      const tableBody = document.querySelector('#asteroid-table tbody');
+
+      data.forEach(item => {
+        const row = document.createElement('tr');
+
+        const idCell = document.createElement('td');
+        idCell.textContent = item.ID.S;
+        row.appendChild(idCell);
+
+        const sizeCell = document.createElement('td');
+        sizeCell.textContent = item['Size (Meters)'].N;
+        row.appendChild(sizeCell);
+
+        const hazardousCell = document.createElement('td');
+        hazardousCell.textContent = item['Is Hazardous'].BOOL;
+        row.appendChild(hazardousCell);
+
+        tableBody.appendChild(row);
+      });
+    }
+
+    function displayAsteroidCount(count) {
+      asteroidCount.textContent = `Total Asteroids Recorded: ${count}`;
+    }
+  </script>
+</body>
+</html>
