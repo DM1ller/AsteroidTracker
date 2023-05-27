@@ -18,4 +18,3 @@ def get_data_dynamodb():
     dynamodb = boto3.client('dynamodb')
     response = dynamodb.scan(TableName='Asteroids_DynamoDB')
     return response['Items']
-    
