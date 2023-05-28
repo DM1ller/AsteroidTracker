@@ -8,7 +8,7 @@ client = boto3.client('dynamodb')
 #Collects the current date and inserts the date into the start and end date of api_link
 current_date = datetime.date.today()
 current_date_str = current_date.strftime("%Y-%m-%d")
-api_link = "https://api.nasa.gov/neo/rest/v1/feed?start_date=" + current_date_str + "&end_date=" + current_date_str + "&api_key=7m6UK6aibw2jHOAvKOAgF6T9AJvMKK21zduo4ZhY"
+api_link = "https://api.nasa.gov/neo/rest/v1/feed?start_date=" + current_date_str + "&end_date=" + current_date_str + "&api_key=#########"
 
 def get_asteroids():
     response = requests.get(api_link)
@@ -26,6 +26,7 @@ def get_asteroids():
         orbiting_body = short_data[asteroid]['close_approach_data'][0]['orbiting_body']
         relative_velocity = str(int(float(short_data[asteroid]['close_approach_data'][0]['relative_velocity']['kilometers_per_hour'])//1))
         
+        #Write the data to the DynamoDB Table
         client.put_item(TableName = 'Asteroids_DynamoDB', Item={'ID':{'S':asteroid_id}, 'Name':{'S':asteroid_name}, 'Size (Meters)': {'N':average_size}, 'Relative Velocity (KPH)': {'S':relative_velocity}, 'Orbiting Body':{'S':orbiting_body}, 'Is Hazardous': {'BOOL':hazardous}})
 
 def lambda_handler(event, context):
