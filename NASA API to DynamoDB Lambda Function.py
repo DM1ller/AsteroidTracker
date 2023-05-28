@@ -1,13 +1,19 @@
 import json
 import requests
 import boto3
+import datetime
 
 client = boto3.client('dynamodb')
 
+#Collects the current date and inserts the date into the start and end date of api_link
+current_date = datetime.date.today()
+current_date_str = current_date.strftime("%Y-%m-%d")
+api_link = "https://api.nasa.gov/neo/rest/v1/feed?start_date=" + current_date_str + "&end_date=" + current_date_str + "&api_key=7m6UK6aibw2jHOAvKOAgF6T9AJvMKK21zduo4ZhY"
+
 def get_asteroids():
-    response = requests.get('https://api.nasa.gov/neo/rest/v1/feed?start_date=2023-05-11&end_date=2023-05-11&api_key=7m6UK6aibw2jHOAvKOAgF6T9AJvMKK21zduo4ZhY')
+    response = requests.get(api_link)
     data = response.json()
-    short_data = data['near_earth_objects']['2023-05-11']
+    short_data = data['near_earth_objects'][current_date_str]
 
     for asteroid in range(len(short_data)):
         asteroid_id = short_data[asteroid]['id']
